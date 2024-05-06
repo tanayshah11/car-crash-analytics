@@ -1,2 +1,6 @@
+format: jb-book
+root: Final_Project_Checkpoint_2_Kalra_Kheria_Shah.ipynb
+
+chapters:
 - file: Final_Project_Checkpoint_2_Kalra_Kheria_Shah
   title: "Car Crash Analytics - Final Project"
