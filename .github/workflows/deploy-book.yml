@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: read
       pages: write
+      id-token: write  # Ensure this permission is set to write
     steps:
       # Checkout your repository content to the GitHub Actions runner
       - uses: actions/checkout@v3
