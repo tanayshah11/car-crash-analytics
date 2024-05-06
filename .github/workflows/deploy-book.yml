@@ -1,0 +1,45 @@
+name: deploy-book
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-book:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+    steps:
+      # Checkout your repository content to the GitHub Actions runner
+      - uses: actions/checkout@v3
+
+      # Setup Python environment
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # Install dependencies from your requirements.txt
+      # Make sure to include jupyter-book or any other dependencies needed to build your book
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Build your Jupyter Book
+      # Assuming your notebook and data are in the root, the build command will default to the current directory
+      - name: Build the book
+        run: |
+          jupyter-book build .
+
+      # Upload the built HTML to GitHub as an artifact (optional, useful for debugging)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: _build/html
+
+      # Deploy the built HTML to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
