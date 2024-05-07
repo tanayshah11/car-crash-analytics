@@ -1,0 +1,39 @@
+name: Deploy Notebook as HTML
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.ipynb'
+      - 'requirements.txt'
+
+jobs:
+  deploy-html:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nbconvert jupyter
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Convert Notebook to HTML
+      run: |
+        jupyter nbconvert --to html --output index.html Final_Project_Kalra_Kheria_Shah.ipynb
+
+    - name: Commit and push
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add index.html
+        git commit -m "Update index.html" --allow-empty
+        git push origin main
