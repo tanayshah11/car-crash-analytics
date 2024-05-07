@@ -1,0 +1,42 @@
+name: Deploy HTML
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.ipynb'  # Triggers the workflow when notebook files are updated
+      - 'requirements.txt'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:  # Setting permissions for the workflow
+      contents: write  # Allows the workflow to commit and push changes
+      pages: write  # Specific permission for GitHub Pages deployment
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nbconvert  # Ensure nbconvert is included
+
+    - name: Convert Notebooks to HTML
+      run: |
+        jupyter nbconvert --to html --execute --output-dir=./html Final_Project_Checkpoint_2_Kalra_Kheria_Shah.ipynb 12-28-13-076.ipynb
+        # Adjust the above command to match your notebook filenames and paths
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # Using the built-in GITHUB_TOKEN
+        publish_dir: ./html  # Directory where the HTML files are stored
+        force_orphan: true  # Optional: Force to create an orphan branch with no commit history
