@@ -33,7 +33,7 @@ jobs:
     # Convert Notebook to HTML
     - name: Convert Notebook to HTML
       run: |
-        jupyter nbconvert --to html --execute --output-dir=. "Final_Project_Checkpoint_2_Kalra_Kheria_Shah.ipynb"
+        jupyter nbconvert --to html --execute --output-dir=. "Final_Project_Kalra_Kheria_Shah.ipynb"
 
     # Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
